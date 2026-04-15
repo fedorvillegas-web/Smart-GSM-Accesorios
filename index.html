@@ -6,175 +6,553 @@
 <title>Smart GSM</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: white;
-}
+body {margin:0;font-family:'Segoe UI',Arial;background:#f6f7fb;}
 
-/* HEADER */
 header {
-    background: black;
-    padding: 15px;
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
+background:#0f172a;color:white;padding:15px;
+display:flex;flex-direction:column;gap:10px;
 }
 
-/* BANNER */
-.banner {
-    background: linear-gradient(90deg, #0ea5e9, #22c55e);
-    padding: 20px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
+.topbar {display:flex;justify-content:space-between;align-items:center;}
+
+input {
+padding:8px;border-radius:8px;border:none;width:200px;
 }
 
-/* GRID */
+#filtros {display:flex;gap:8px;flex-wrap:wrap;}
+
+#filtros button {
+background:white;
+border:1px solid #d1d5db;
+padding:8px 14px;
+border-radius:20px;
+cursor:pointer;
+font-size:13px;
+font-weight:500;
+transition:all 0.25s ease;
+}
+
+#filtros button:hover {
+background:#000;
+color:white;
+border-color:#000;
+transform:scale(1.05);
+}
+
+#filtros button.activo {
+background:#000;
+color:white;
+border-color:#000;
+}
+
 .container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;padding:20px;
 }
 
-/* CARD */
 .card {
-    background: #1e293b;
-    border-radius: 16px;
-    padding: 15px;
-    text-align: center;
-    position: relative;
-    transition: 0.3s;
+background:white;border-radius:16px;padding:15px;
+text-align:center;box-shadow:0 5px 15px rgba(0,0,0,0.08);
+position:relative;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-    transform: translateY(-6px);
+transform: scale(1.05);
+box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
-/* ETIQUETA */
-.tag {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: red;
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-size: 12px;
+.card.agotado {filter: grayscale(100%) brightness(0.85);}
+
+.badge {
+position:absolute;top:10px;left:10px;
+background:#dc3545;color:white;
+padding:4px 8px;border-radius:6px;font-size:12px;
 }
 
-/* IMG */
 .card img {
-    width: 100%;
-    height: 160px;
-    object-fit: contain;
+width:100%;height:140px;object-fit:contain;
+transition: transform 0.3s ease;
 }
 
-/* TEXTOS */
-.nombre {
-    font-weight: bold;
-    margin: 10px 0;
-}
+.card:hover img {transform: scale(1.1);}
 
-.precio {
-    color: #22c55e;
-    font-size: 20px;
-    font-weight: bold;
-}
+.price {font-weight:bold;margin:8px 0;font-size:18px;}
 
-/* BOTON */
 .btn {
-    background: #25D366;
-    padding: 10px;
-    border-radius: 10px;
-    color: white;
-    text-decoration: none;
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
+background:#0d6efd;color:white;border:none;
+padding:10px;border-radius:10px;width:100%;cursor:pointer;margin-top:5px;
 }
 
-.btn:hover {
-    background: #1ebe5d;
+.buy {background:#25D366;}
+
+#abrirCarrito {
+position:fixed;bottom:20px;right:20px;
+background:#000;color:white;border:none;
+padding:18px;border-radius:50%;
+font-size:22px;z-index:999;
+box-shadow:0 5px 15px rgba(0,0,0,0.4);
 }
 
-/* WHATSAPP FLOAT */
-.whatsapp {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #25D366;
-    padding: 15px;
-    border-radius: 50%;
-    font-size: 22px;
-    text-decoration: none;
+#contador {
+position:absolute;top:-5px;right:-5px;
+background:red;color:white;font-size:12px;
+padding:3px 6px;border-radius:50%;
 }
 
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 15px;
-    color: gray;
+.panel {
+position:fixed;
+right:0;
+top:0;
+width:350px;
+height:100%;
+background:white;
+box-shadow:-5px 0 20px rgba(0,0,0,0.2);
+padding:15px;
+transform:translateX(100%);
+transition:0.3s;
+display:flex;
+flex-direction:column;
+z-index:1000;
+
+/* 👇 CLAVE */
+overflow-y:auto;
 }
+.panel.activo {transform:translateX(0);}
+
+#overlay {
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.4);display:none;
+z-index:999;
+}
+#overlay.activo {display:block;}
+
+.item {
+display:flex;justify-content:space-between;
+align-items:center;background:#f9fafb;
+padding:8px;border-radius:10px;margin:8px 0;
+}
+
+.controls button {
+background:#e5e7eb;border:none;
+padding:4px 8px;border-radius:6px;
+cursor:pointer;
+}
+
+.footer-carrito {margin-top:auto;padding-top:10px;}
+
+.total {font-size:20px;font-weight:bold;margin-bottom:10px;}
+
+.btn2 {
+width:100%;padding:12px;border:none;
+border-radius:10px;margin-top:5px;
+cursor:pointer;font-size:14px;
+}
+
+.whatsapp {background:#25D366;color:white;}
+.vaciar {background:#dc3545;color:white;}
+.ver {background:#0d6efd;color:white;}
+
+  /* TODO TU CSS ACTUAL */
+
+/* ===== BOTONES WHATSAPP PRO ===== */
+
+.vendedores {
+display:flex;
+flex-direction:column;
+gap:10px;
+margin-top:10px;
+}
+
+.vendedores button {
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+padding:12px;
+border-radius:12px;
+border:none;
+font-weight:bold;
+font-size:14px;
+cursor:pointer;
+color:white;
+background:linear-gradient(135deg,#25D366,#128C7E);
+box-shadow:0 4px 12px rgba(0,0,0,0.25);
+transition:all 0.25s ease;
+}
+
+/* efecto hover */
+.vendedores button:hover {
+transform:scale(1.05);
+box-shadow:0 8px 18px rgba(0,0,0,0.35);
+}
+
+/* efecto click */
+.vendedores button:active {
+transform:scale(0.95);
+}
+
+/* ===== BOTONES WHATSAPP PRO UNIVERSAL ===== */
+
+.btn2.whatsapp {
+background: linear-gradient(135deg,#25D366,#128C7E);
+color:white;
+font-weight:bold;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+border-radius:14px;
+box-shadow:0 4px 12px rgba(0,0,0,0.25);
+transition:all 0.3s ease;
+}
+
+/* hover */
+.btn2.whatsapp:hover {
+transform:scale(1.05);
+box-shadow:0 8px 18px rgba(0,0,0,0.35);
+}
+
+/* click */
+.btn2.whatsapp:active {
+transform:scale(0.95);
+}
+
+.logo img{
+height:40px;
+object-fit:contain;
+}
+
+.logo img{
+height:45px;
+filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+}
+  
 </style>
 </head>
 
 <body>
 
-<header>📱 Smart GSM</header>
-
-<div class="banner">
-🔥 OFERTAS EN CELULARES Y ACCESORIOS 🔥
+<header>
+<div class="topbar">
+<div class="logo">
+<img src="img/logo.png" alt="Smart GSM">
+</div>
+<input type="text" id="buscador" placeholder="Buscar...">
 </div>
 
-<div class="container">
+<div id="filtros">
+<button onclick="filtrar('')" class="activo">Todos</button>
+<button onclick="filtrar('apple')">Apple</button>
+<button onclick="filtrar('xiaomi')">Xiaomi</button>
+<button onclick="filtrar('honor')">Honor</button>
+<button onclick="filtrar('realme')">Realme</button>
+<button onclick="filtrar('tecno')">Tecno</button>
+<button onclick="filtrar('infinix')">Infinix</button>
+<button onclick="toggleAgotados(this)">Ocultar agotados</button>
+</div>
+</header>
 
-<div class="card">
-<div class="tag">OFERTA</div>
-<img src="https://via.placeholder.com/150">
-<div class="nombre">POCO M8 PRO 5G 12/512</div>
-<div class="precio">Bs 3.254</div>
-<a class="btn" href="https://wa.me/59170341190?text=Quiero%20POCO%20M8%20PRO%2012/512">Comprar por WhatsApp</a>
+<div id="overlay" onclick="cerrarPanel()"></div>
+
+<button id="abrirCarrito" onclick="togglePanel()">
+🛒 <span id="contador">0</span>
+</button>
+
+<div class="container" id="productos"></div>
+
+<div class="panel" id="panel">
+<h3>🧾 Pedido</h3>
+<div id="lista"></div>
+
+<div class="footer-carrito">
+<div class="total">💰 Total: Bs <span id="total">0</span></div>
+
+<button class="btn2 ver" onclick="verPedido()">🧾 Ver pedido</button>
+
+<div id="whatsappVendedores" style="display:flex;flex-direction:column;gap:6px;"></div>
+
+<button class="btn2 vaciar" onclick="vaciar()">🗑 Vaciar</button>
+</div>
 </div>
 
-<div class="card">
-<div class="tag">OFERTA</div>
-<img src="https://via.placeholder.com/150">
-<div class="nombre">POCO M8 PRO 5G 8/256</div>
-<div class="precio">Bs 2.832</div>
-<a class="btn" href="https://wa.me/59170341190?text=Quiero%20POCO%20M8%20PRO%208/256">Comprar</a>
+<script>
+let cart={};
+let ocultarAgotados=false;
+
+let vendedores = [
+{nombre:"Eliana", numero:"59165391513"},
+{nombre:"Pamela", numero:"59165391518"},
+{nombre:"Judith", numero:"59165391339"},
+{nombre:"Fabiola", numero:"59169484826"},
+{nombre:"Janine", numero:"59160751226"},
+{nombre:"Fedor", numero:"59170341190"}
+];
+
+let productos=[
+["Xiaomi 12V Max Brushless Cordless Drill",969,false],
+["Xiaomi 165W Power Bank 10000 Mah",380,false],
+["Xiaomi 18W Redmi Fast Charge Power Bank 20000 Mah",228,false],
+["Xiaomi 212W Hypercharge Power Bank 25000 Mah",960,false],
+["Xiaomi 22.5W Power Bank 10000 Mah",228,false],
+["Xiaomi 22.5W Power Bank 20000 Mah",247,false],
+["Xiaomi 33W Magnetic Power Bank 10000 Mah",323,false],
+["Xiaomi 33W Power Bank 10000 Mah",257,false],
+["Xiaomi 33W Power Bank 20000 Mah",285,false],
+["Xiaomi Air Fryer Essential 6L",713,false],
+["Xiaomi Air Fryer 6.5L",1026,false],
+["Xiaomi Blender",741,false],
+["Xiaomi Blender Pro",903,false],
+["Xiaomi Bluetooth Speaker",618,false],
+["Xiaomi Bluetooth Speaker Mini",352,false],
+["Xiaomi Body Composition Scale S400",247,false],
+["Xiaomi Compact Hair Dryer",238,false],
+["Xiaomi Electric Kettle 2 Lite",257,false],
+["Xiaomi Electric Shaver S200",380,false],
+["Xiaomi Electric Precision Screwdriver",352,false],
+["Xiaomi Electric Shaver S700",684,false],
+["Xiaomi Faucet Water Purifier",266,false],
+["Xiaomi Focus Pen",751,false],
+["Xiaomi Grooming Kit Pro",456,false],
+["Xiaomi Hair Clipper 2",314,false],
+["Xiaomi Hair Dryer H300",323,false],
+["Xiaomi Ihealth Pt3 Termómetro",285,false],
+["Xiaomi Induction Cooker Lite",760,false],
+["Xiaomi Instant Photo Paper 3 40 Hojas",257,false],
+["Xiaomi Keyboard Redmi Pad Pro",703,false],
+["Xiaomi Magnetic Power Bank 5000 Mah",257,false],
+["Xiaomi Magnetic Power Bank 6000 Mah",466,false],
+["Xiaomi Mesh System Ac1200 2-Pack",494,false],
+["Xiaomi Mesh System Ac1200 3-Pack",665,false],
+["Xiaomi Mesh System Ax3000 2-Pack",713,false],
+["Xiaomi Mi 16-In-1 Ratchet Screwdriver",171,false],
+["Xiaomi Mi Computer Backpack",238,false],
+["Xiaomi Mi Computer Glasses Pro",190,false],
+["Xiaomi Mi Cordless Screwdriver",266,false],
+["Xiaomi Mi Dual Mode Wireless Mouse Silent Edition",162,false],
+["Xiaomi Mi Electric Shaver S500 Repuesto",114,false],
+["Xiaomi Mi Lcd Writing Tablet 13.5 Edition Color",228,false],
+["Xiaomi Mi Nylon Polarized Sunglasses Msg03Gl",361,false],
+["Xiaomi Mi Polarized Sunglasses Msg05Gl",190,false],
+["Xiaomi Mi Portable Photo Printer",494,false],
+["Xiaomi Mi Precision Screwdriver Kit",190,false],
+["Xiaomi Mi Smart Clock",371,false],
+["Xiaomi Mi Smart Home Hub",190,false],
+["Xiaomi Mi Smart Led Bulb Essential White And Color",200,false],
+["Xiaomi Mi Smart Led Desk Lamp 1S",371,false],
+["Xiaomi Mi Smart Led Desk Lamp Pro",694,false],
+["Xiaomi Mi Smart Scale 200",190,false],
+["Xiaomi Mi Tv Soundbar",542,false],
+["Xiaomi Mi Tv Stick",371,false],
+["Xiaomi Mi Vacuum Cleaner Mini",390,false],
+["Xiaomi Mi Wireless Mouse 3",209,false],
+["Xiaomi Mi Wireless Outdoor Segurity Camera 1080P",523,false],
+["Xiaomi Mi Wireless Outdoor Segurity Camera 1080P Set",713,false],
+["Xiaomi Multifuncional Hot Pot Cooker 6L",941,false],
+["Xiaomi Multifuncional Kettle",304,false],
+["Xiaomi Nose Hair Trimmer",181,false],
+["Xiaomi Oscillation Electric Toothbrush",247,false],
+["Xiaomi Portable Blender",295,false],
+["Xiaomi Portable Electric Air Compressor 2",390,false],
+["Xiaomi Redmi Buds 6",371,false],
+["Xiaomi Redmi Buds 6 Active",200,false],
+["Xiaomi Redmi Buds 6 Lite",228,false],
+["Xiaomi Redmi Buds 6 Play",166,false],
+["Xiaomi Redmi Buds 8 Lite",266,false],
+["Xiaomi Redmi Buds 8 Active",247,false],
+["Xiaomi Redmi Buds 8 Pro",551,false],
+["Xiaomi Redmi Sonicbass Wireless Earphone",285,false],
+["Xiaomi Redmi Watch 4",760,false],
+["Xiaomi Redmi Watch 5",741,false],
+["Xiaomi Redmi Watch 5 Active",361,false],
+["Xiaomi Redmi Watch 5 Lite",456,false],
+["Xiaomi Router Ax1500",304,false],
+["Xiaomi Router Ax3000T",409,false],
+["Xiaomi Smart Air Fryer 3.5L",675,false],
+["Xiaomi Smart Air Fryer 6.5L",836,false],
+["Xiaomi Smart Air Purifier 4",1473,false],
+["Xiaomi Smart Air Purifier 4 Lite",1359,false],
+["Xiaomi Smart Band 10",418,false],
+["Xiaomi Smart Band 9 Active",285,false],
+["Xiaomi Smart Camera C500 Pro",475,false],
+["Xiaomi Smart Jump Rope",228,false],
+["Xiaomi Smart Kettle 2 Pro",523,false],
+["Xiaomi Smart Projector L1",1948,false],
+["Xiaomi Smart Projector L1 Pro",2641,false],
+["Xiaomi Smart Scale S200",200,false],
+["Xiaomi Sound Outdoor 30W",428,false],
+["Xiaomi Sound Party 50W",1064,false],
+["Xiaomi Sound Pocket",238,false],
+["Xiaomi Soundbar Pro 2.1",1805,false],
+["Xiaomi Sport Water Bottle",209,false],
+["Xiaomi Straw Mug",238,false],
+["Xiaomi Tv Box S 3Ra Gen",561,false],
+["Xiaomi Vacuum Cleaner G20 Lite",1093,false],
+["Xiaomi Vacuum Cleaner G20 Max",2233,false],
+["Xiaomi Watch S4",1283,false],
+["Xiaomi Watch S4 Sunset Gold",1682,false],
+["Xiaomi Watch S4 White",1378,false],
+["Xiaomi Water Ionic Hair Dryer H500",551,false],
+["Xiaomi Wifi Range Extender N300",133,false],
+["Xiaomi Wireless Mouse Lite",124,false],
+["Xiaomi Wireless Mouse Lite 2",133,false]
+];
+
+function mostrar(lista){
+let html="";
+lista.forEach(p=>{
+if(ocultarAgotados && p[2]) return;
+
+let img = p[3] ? p[3] : "img/default.png";
+
+html+=`
+<div class="card ${p[2] ? 'agotado' : ''}">
+${p[2]?'<div class="badge">❌ AGOTADO</div>':''}
+<img src="${img}">
+<p>${p[0]}</p>
+<p class="price">Bs ${p[1].toLocaleString()}</p>
+
+${p[2] ? `
+<button class="btn" disabled>Sin stock</button>
+<button class="btn buy" disabled>No disponible</button>
+` : `
+<button class="btn" onclick="add('${p[0]}',${p[1]})">Agregar</button>
+<button class="btn buy" onclick="comprar('${p[0]}',${p[1]})">💬 Comprar por WhatsApp</button>
+`}
+</div>`;
+});
+document.getElementById("productos").innerHTML=html;
+}
+
+function toggleAgotados(btn){
+ocultarAgotados=!ocultarAgotados;
+btn.textContent = ocultarAgotados ? "Mostrar agotados" : "Ocultar agotados";
+mostrar(productos);
+}
+
+function renderVendedores(){
+let html="<strong>📲 Elegir vendedor:</strong>";
+
+vendedores.forEach(v=>{
+html += `
+<button class="btn2 whatsapp" onclick="enviar('${v.numero}','${v.nombre}')">
+📲 ${v.nombre}
+</button>
+`;
+});
+
+document.getElementById("whatsappVendedores").innerHTML = html;
+}
+
+function enviar(numero,nombre){
+let txt="🛒 *SMART GSM*%0A%0A";
+let total=0;
+
+txt += "Hola " + nombre + ", quiero realizar el siguiente pedido:%0A%0A";
+
+for(let i in cart){
+let p=cart[i];
+txt+=`📱 ${i} x${p.cantidad}%0A`;
+total+=p.precio*p.cantidad;
+}
+
+txt+=`%0ATotal: Bs ${total}`;
+
+window.open("https://wa.me/"+numero+"?text="+txt);
+}
+
+function add(n,p){
+if(!cart[n]) cart[n]={precio:p,cantidad:1};
+else cart[n].cantidad++;
+render();
+}
+
+function comprar(n,p){
+
+if(!cart[n]) cart[n]={precio:p,cantidad:1};
+else cart[n].cantidad++;
+
+render();
+
+document.getElementById("panel").classList.add("activo");
+document.getElementById("overlay").classList.add("activo");
+
+}
+
+function render(){
+let html="",total=0,cant=0;
+
+for(let i in cart){
+let p=cart[i];
+let sub=p.precio*p.cantidad;
+total+=sub;
+cant+=p.cantidad;
+
+html+=`
+<div class="item">
+<div>${i}</div>
+<div class="controls">
+<button onclick="cambiar('${i}',-1)">-</button>
+${p.cantidad}
+<button onclick="cambiar('${i}',1)">+</button>
 </div>
+<div>Bs ${sub.toLocaleString()}</div>
+</div>`;
+}
 
-<div class="card">
-<img src="https://via.placeholder.com/150">
-<div class="nombre">POCO PAD 8/256</div>
-<div class="precio">Bs 2.256</div>
-<a class="btn" href="https://wa.me/59170341190?text=Quiero%20POCO%20PAD%208/256">Comprar</a>
-</div>
+document.getElementById("lista").innerHTML=html;
+document.getElementById("total").innerText=total.toLocaleString();
+document.getElementById("contador").innerText=cant;
+}
 
-<div class="card">
-<img src="https://via.placeholder.com/150">
-<div class="nombre">POCO PAD M1 8/256</div>
-<div class="precio">Bs 2.678</div>
-<a class="btn" href="https://wa.me/59170341190?text=Quiero%20POCO%20PAD%20M1">Comprar</a>
-</div>
+function cambiar(n,v){
+cart[n].cantidad+=v;
+if(cart[n].cantidad<=0) delete cart[n];
+render();
+}
 
-<div class="card">
-<div class="tag">NUEVO</div>
-<img src="https://via.placeholder.com/150">
-<div class="nombre">POCO PAD X1 8/512</div>
-<div class="precio">Bs 3.312</div>
-<a class="btn" href="https://wa.me/59170341190?text=Quiero%20POCO%20PAD%20X1">Comprar</a>
-</div>
+function vaciar(){cart={};render();}
 
-</div>
+function togglePanel(){
+document.getElementById("panel").classList.toggle("activo");
+document.getElementById("overlay").classList.toggle("activo");
+}
 
-<a class="whatsapp" href="https://wa.me/59170341190">💬</a>
+function cerrarPanel(){
+document.getElementById("panel").classList.remove("activo");
+document.getElementById("overlay").classList.remove("activo");
+}
 
-<footer>
-© 2026 Smart GSM - Cochabamba
-</footer>
+function verPedido(){
+let txt="🧾 RESUMEN%0A%0A";
+let total=0;
+
+for(let i in cart){
+let p=cart[i];
+txt+=`${i} x${p.cantidad} = Bs ${p.precio*p.cantidad}%0A`;
+total+=p.precio*p.cantidad;
+}
+
+txt+=`%0ATotal: Bs ${total}`;
+alert(decodeURIComponent(txt));
+}
+
+document.getElementById("buscador").addEventListener("input",e=>{
+let val=e.target.value.toLowerCase();
+let filtrado=productos.filter(p=>p[0].toLowerCase().includes(val));
+mostrar(filtrado);
+});
+
+function filtrar(marca){
+if(!marca){mostrar(productos);return;}
+let filtrado=productos.filter(p=>p[0].toLowerCase().includes(marca));
+mostrar(filtrado);
+}
+
+mostrar(productos);
+renderVendedores();
+</script>
 
 </body>
 </html>
