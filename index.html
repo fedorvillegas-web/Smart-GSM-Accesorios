@@ -442,17 +442,158 @@ color:#9ca3af;
 <input type="text" id="buscador" placeholder="Buscar...">
 </div>
 
+<!-- ===== FILTROS DE MARCAS Y CATEGORÍAS ===== -->
+
 <div id="filtros">
-<button onclick="filtrar('')" class="activo">Todos</button>
-<button onclick="filtrar('divoom')">Divoom</button>
-<button onclick="filtrar('xiaomi')">Xiaomi</button>
-<button onclick="filtrar('honor')">Honor</button>
-<button onclick="filtrar('realme')">Realme</button>
-<button onclick="filtrar('tronsmart')">Tronsmart</button>
-<button onclick="filtrar('onn')">Onn</button>
-<button onclick="filtrar('mibro')">Mibro</button>
-<button onclick="filtrar('amazon')">Amazon</button>
-<button onclick="filtrar('imilab')">Imilab</button>
+
+  <div class="grupo-filtros">
+
+    <div class="titulo-filtro">
+      Marcas
+    </div>
+
+    <div class="lista-filtros" id="filtrosMarca">
+
+      <button
+        type="button"
+        class="activo"
+        onclick="seleccionarMarca(this, '')">
+        Todas
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarMarca(this, 'divoom')">
+        Divoom
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarMarca(this, 'xiaomi')">
+        Xiaomi
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarMarca(this, 'honor')">
+        Honor
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarMarca(this, 'realme')">
+        Realme
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarMarca(this, 'tronsmart')">
+        Tronsmart
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarMarca(this, 'onn')">
+        Onn
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarMarca(this, 'mibro')">
+        Mibro
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarMarca(this, 'amazon')">
+        Amazon
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarMarca(this, 'imilab')">
+        Imilab
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="grupo-filtros">
+
+    <div class="titulo-filtro">
+      Categorías
+    </div>
+
+    <div class="lista-filtros" id="filtrosCategoria">
+
+      <button
+        type="button"
+        class="activo"
+        onclick="seleccionarCategoria(this, '')">
+        Todas
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarCategoria(this, 'audifonos')">
+        🎧 Audífonos
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarCategoria(this, 'parlantes')">
+        🔊 Parlantes
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarCategoria(this, 'relojes')">
+        ⌚ Relojes
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarCategoria(this, 'cargadores')">
+        🔌 Cargadores
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarCategoria(this, 'powerbanks')">
+        🔋 Power Banks
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarCategoria(this, 'camaras')">
+        📷 Cámaras
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarCategoria(this, 'hogar')">
+        🏠 Hogar
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarCategoria(this, 'television')">
+        📺 Entretenimiento
+      </button>
+
+      <button
+        type="button"
+        onclick="seleccionarCategoria(this, 'otros')">
+        ➕ Otros
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 </div>
 </header>
 
