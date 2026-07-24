@@ -13,7 +13,67 @@ body {
   color: #1f2937;
 }
 
+/* ===== FRANJA INFORMATIVA SUPERIOR ===== */
 
+.barra-superior {
+  background: #111827;
+  color: white;
+  padding: 9px 20px;
+  font-size: 13px;
+}
+
+.barra-superior-contenido {
+  max-width: 1400px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.barra-superior-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.barra-superior a {
+  color: white;
+  text-decoration: none;
+}
+
+.barra-superior a:hover {
+  text-decoration: underline;
+}
+
+/* Adaptación para celulares */
+
+@media (max-width: 700px) {
+
+  .barra-superior {
+    padding: 8px 12px;
+  }
+
+  .barra-superior-contenido {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 22px;
+    scrollbar-width: none;
+  }
+
+  .barra-superior-contenido::-webkit-scrollbar {
+    display: none;
+  }
+
+  .barra-superior-item {
+    font-size: 12px;
+  }
+
+}
+  
 header {
 background: linear-gradient(135deg,#0f172a,#1e293b);
 color:white;
@@ -341,9 +401,39 @@ color:#9ca3af;
   
 </style>
 </head>
-
+  
 <body>
 
+<!-- ===== FRANJA INFORMATIVA SUPERIOR ===== -->
+
+<div class="barra-superior">
+
+  <div class="barra-superior-contenido">
+
+    <div class="barra-superior-item">
+      🚚 Envíos a toda Bolivia
+    </div>
+
+    <div class="barra-superior-item">
+      <a
+        href="https://wa.me/59170341190"
+        target="_blank">
+        💬 Atención por WhatsApp
+      </a>
+    </div>
+
+    <div class="barra-superior-item">
+      🔒 Compra segura
+    </div>
+
+    <div class="barra-superior-item">
+      📍 Cochabamba, Bolivia
+    </div>
+
+  </div>
+
+</div>
+  
 <header>
 <div class="topbar">
 <div class="logo">
