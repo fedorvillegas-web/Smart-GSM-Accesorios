@@ -990,6 +990,89 @@ body.modal-abierto{overflow:hidden;}
 .xiaomi-home-carrusel-titulo{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:20px 0 12px;}.xiaomi-home-carrusel-titulo h3{margin:0;font-size:24px;color:#111827;}.xiaomi-home-carrusel-titulo button{border:0;background:transparent;color:#168252;font-weight:800;cursor:pointer;}
 @media(max-width:800px){.xiaomi-home{padding:0 12px;margin-bottom:30px;}.xiaomi-home-slide{grid-template-columns:1fr;padding:30px 24px 54px;min-height:560px;text-align:center;}.xiaomi-home-copy p{margin-left:auto;margin-right:auto;}.xiaomi-home-actions{justify-content:center;}.xiaomi-home-visual{order:-1;min-height:220px;}.xiaomi-home-visual img{width:130px;height:130px;}.xiaomi-home-visual img:nth-child(3){width:155px;height:155px;}.xiaomi-home-flecha{display:none;}}
 
+/* ===== TARJETAS Y PRECIOS DE OFERTA ===== */
+
+.card.card-oferta {
+  border: 1px solid #fde68a;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 235, .95), #ffffff 48%);
+}
+
+.card.card-oferta:hover {
+  box-shadow: 0 14px 32px rgba(245, 158, 11, .18);
+}
+
+.etiqueta-oferta {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  z-index: 4;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 5px 12px rgba(220, 38, 38, .28);
+}
+
+.badge-descuento {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  min-width: 47px;
+  height: 47px;
+  padding: 0 6px;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #facc15;
+  color: #713f12;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 6px 16px rgba(250, 204, 21, .38);
+}
+
+.precios-oferta {
+  min-height: 58px;
+  margin: 8px 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.precio-anterior {
+  margin: 0 0 3px;
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.precio-actual-oferta {
+  margin: 0;
+  color: #16a34a;
+  font-size: 21px;
+  font-weight: 900;
+}
+
+@media (max-width: 700px) {
+  .badge-descuento {
+    min-width: 44px;
+    height: 44px;
+    font-size: 12px;
+  }
+
+  .etiqueta-oferta {
+    font-size: 10px;
+  }
+}
+  
 </style>
 </head>
   
@@ -1610,16 +1693,75 @@ const clasificacionProductos = {
 function tarjetaProducto(p){
   if(p[2]) return "";
 
+  const nombre = p[0];
+  const precioNuevoUsd = Number(p[1]);
   const img = p[3] || "img/default.png";
+  const precioAnteriorUsd = Number(p[4]);
+
+  const precioNuevoBs = Math.round(precioNuevoUsd * cambio);
+
+  const tieneOfertaValida =
+    Number.isFinite(precioAnteriorUsd) &&
+    precioAnteriorUsd > precioNuevoUsd;
+
+  let claseTarjeta = "";
+  let distintivosOferta = "";
+  let bloquePrecio = `
+    <p class="price">
+      Bs ${precioNuevoBs.toLocaleString()}
+    </p>
+  `;
+
+  if(tieneOfertaValida){
+    const precioAnteriorBs = Math.round(precioAnteriorUsd * cambio);
+
+    const porcentajeDescuento = Math.round(
+      ((precioAnteriorUsd - precioNuevoUsd) / precioAnteriorUsd) * 100
+    );
+
+    claseTarjeta = " card-oferta";
+
+    distintivosOferta = `
+      <span class="etiqueta-oferta">🔥 Oferta</span>
+      <span class="badge-descuento">-${porcentajeDescuento}%</span>
+    `;
+
+    bloquePrecio = `
+      <div class="precios-oferta">
+        <p class="precio-anterior">
+          Antes Bs ${precioAnteriorBs.toLocaleString()}
+        </p>
+
+        <p class="precio-actual-oferta">
+          Ahora Bs ${precioNuevoBs.toLocaleString()}
+        </p>
+      </div>
+    `;
+  }
 
   return `
-    <div class="card">
-      <img src="${img}" alt="${p[0]}" loading="lazy">
-      <p>${p[0]}</p>
-      <p class="price">Bs ${Math.round(p[1] * cambio).toLocaleString()}</p>
-      <button class="btn" onclick="add('${p[0]}',${p[1]})">Agregar</button>
-      <button class="btn buy" onclick="comprar('${p[0]}',${p[1]})">💬 Comprar por WhatsApp</button>
-    </div>`;
+    <div class="card${claseTarjeta}">
+      ${distintivosOferta}
+
+      <img src="${img}" alt="${nombre}" loading="lazy">
+
+      <p>${nombre}</p>
+
+      ${bloquePrecio}
+
+      <button
+        class="btn"
+        onclick="add('${nombre}',${precioNuevoUsd})">
+        Agregar
+      </button>
+
+      <button
+        class="btn buy"
+        onclick="comprar('${nombre}',${precioNuevoUsd})">
+        💬 Comprar por WhatsApp
+      </button>
+    </div>
+  `;
 }
 
 function productosPorSeccion(tipo){
